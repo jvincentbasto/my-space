@@ -1,0 +1,26 @@
+name: my-space-dev
+services:
+  web:
+    image: my-space-dev
+    container_name: my-space-dev-web
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    # environment: 
+      # - DB_URL: mongodb://db/tasked
+    env_file:
+      - .env.local
+    command: npm run dev
+    develop:
+      watch:
+        # dependencies
+        - path: package.json
+          action: rebuild
+        - path: package-lock.json
+          action: rebuild
+        # app
+        - path: .
+          target: /app
+          action: sync
